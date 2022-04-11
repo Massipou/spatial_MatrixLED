@@ -1,0 +1,89 @@
+#!/usr/bin/env python
+# -*- charset utf8 -*-
+
+import pyaudio
+import numpy
+import math
+import socket
+import threading
+
+RATE = 44100
+BUFFER = 882
+
+p = pyaudio.PyAudio()
+stream = p.open(
+    format = pyaudio.paFloat32,
+    channels = 1,
+    rate = RATE,
+    input = True,
+    output = False,
+    frames_per_buffer = BUFFER
+)
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(('192.168.1.243', 8088))
+
+r = range(0,int(RATE/2+1),int(RATE/BUFFER))
+l = len(r)
+
+def get_sound_data():
+    try:
+        data = numpy.fft.rfft(numpy.fromstring(
+            stream.read(BUFFER), dtype=numpy.float32)
+        )
+    except IOError:
+        pass
+    data = numpy.log10(numpy.sqrt(
+        numpy.real(data)**2+numpy.imag(data)**2) / BUFFER) * 10
+    return (data)
+
+def freqindex(freq):
+    return round(int(freq /50))
+
+def freq_to_color2():
+    rseuil = 15 #+12
+    gseuil = 14 #+20
+    bseuil = 15 #+40
+    sounddata = get_sound_data()
+    bassmax = -60
+    midmax = -60
+    highmax = -60
+    for i in range (50, 200, 50):
+        if sounddata[freqindex(i)] > bassmax : bassmax = sounddata[freqindex(i)]
+    for i in range (250, 500, 50):
+        if sounddata[freqindex(i)] > midmax : midmax = sounddata[freqindex(i)]
+    for i in range (500, 2000, 50):
+        if sounddata[freqindex(i)] > highmax : highmax = sounddata[freqindex(i)]
+
+    if -bassmax < rseuil:
+        r = int(round(((bassmax + rseuil)/5)**4))
+        if r < 0: r = 0
+        if r > 255: r = 255
+    else: r = 0
+    if -midmax < gseuil:
+        g = int(round(((midmax + gseuil)/3)**4))
+        if g < 0: g = 0
+        if g > 255: g = 255
+    else: g = 0
+    if -highmax < bseuil:
+        b = int(round(((highmax + bseuil)/4)**4))
+        if b < 0: b = 0
+        if b > 255: b = 255
+    else: b = 0
+    #print ("{}, {}" .format(highmax, bseuil))
+
+    return (r, g, b)
+
+start = True
+
+def send_color():
+    while True:
+        try:
+            r, g, b = freq_to_color2()
+            data = "{} {} {}" .format(r, g, b)
+            #print(data)
+            s.send(data.encode())
+        except:
+            s.close()
+            start = False
+            pass

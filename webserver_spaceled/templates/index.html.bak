@@ -1,0 +1,17 @@
+<h1>LeD MaNaGeR</h1>
+
+<form method="POST">
+       <div><label>Start/Stop: <input type="text" name="start_stop"></label></div>
+       <input type="submit" value="Submit">
+</form>
+
+<h1>Color sender status is: {{status}}</h1>
+
+<h1>EQ:</h1>
+
+<form method="POST">
+       <div><label>Bass: <input type="text" name="R" value="{{R}}"></label></div>
+       <div><label>Mid: <input type="text" name="G" value="{{G}}"></label></div>
+       <div><label>high: <input type="text" name="B" value="{{B}}"></label></div>
+       <input type="submit" value="Submit">
+</form>

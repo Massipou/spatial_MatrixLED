@@ -1,0 +1,118 @@
+<style>
+       .slidecontainer {
+    width: 100%;
+  }
+  
+  .slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  .slider:hover {
+    opacity: 1;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #04AA6D;
+    cursor: pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #04AA6D;
+    cursor: pointer;
+  }
+  
+</style>
+
+<h1>LeD MaNaGeR</h1>
+
+<form method="POST">
+       <div><label>Start/Stop: <input type="text" name="start_stop"></label></div>
+       <input type="submit" value="Submit">
+</form>
+
+<h1>Color sender status is: {{status}}</h1>
+
+<h1>Templates:</h1>
+
+<form method="POST">
+       <div><button type="submit" name="Template1" value="Template1"> Boules d'energie rouge </button> <button type="submit" name="Template2" value="Template2"> boules d'energie psyche rouge</button>  <button type="submit" name="Template3" value="Template3"> Boules d'energie psy rouge rapide </button></div>
+       <div><button type="submit" name="Template4" value="Template4"> Boules d'energie purple  </button> <button type="submit" name="Template5" value="Template5"> boules d'energie psyche purple</button> <button type="submit" name="Template6" value="Template6"> Boules d'energie purple rapide</button></div>
+       <div><button type="submit" name="Template7" value="Template7"> Boules d'energie bleu  </button> <button type="submit" name="Template8" value="Template8"> boules d'energie psyche bleu</button> <button type="submit" name="Template9" value="Template9"> Boules d'energie bleu rapide</button></div>
+<h2>Longue trainées:</h2>
+       <div><button type="submit" name="Template10" value="Template10"> Boules d'energie rouge </button> <button type="submit" name="Template11" value="Template11"> boules d'energie psyche rouge</button>  <button type="submit" name="Template12" value="Template12"> Boules d'energie psy rouge rapide </button></div>
+       <div><button type="submit" name="Template13" value="Template13"> Boules d'energie purple  </button> <button type="submit" name="Template14" value="Template14"> boules d'energie psyche purple</button> <button type="submit" name="Template15" value="Template15"> Boules d'energie purple rapide</button></div>
+       <div><button type="submit" name="Template16" value="Template16"> Boules d'energie bleu  </button> <button type="submit" name="Template17" value="Template17"> boules d'energie psyche bleu</button> <button type="submit" name="Template18" value="Template18"> Boules d'energie bleu rapide</button></div>
+
+
+
+</form>
+
+
+
+<form method="POST">
+       <!-- <div><label>Bass: <input type="text" name="R" value="{{R}}"></label></div>
+       <div><label>Mid: <input type="text" name="G" value="{{G}}"></label></div>
+       <div><label>high: <input type="text" name="B" value="{{B}}"></label></div> -->
+
+       <div><label>Red: <input type="range" name="RED" value="{{RED}}" max="255" min="0" step="1" class="slider"></div>
+       <div> {{RED}} </div>
+       <div><label>Green: <input type="range" name="GREEN" value="{{GREEN}}" max="255" min="0" step="1" class="slider"></div>
+       <div> {{GREEN}} </div>
+       <div><label>Blue: <input type="range" name="BLUE" value="{{BLUE}}" max="255" min="0" step="1" class="slider"></div>
+       <div> {{BLUE}} </div>
+
+       <input type="submit" value="Submit">
+</form>
+
+
+<h1>EQ:</h1>
+
+<form method="POST">
+       <!-- <div><label>Bass: <input type="text" name="R" value="{{R}}"></label></div>
+       <div><label>Mid: <input type="text" name="G" value="{{G}}"></label></div>
+       <div><label>high: <input type="text" name="B" value="{{B}}"></label></div> -->
+
+       <div><label>Bass: <input type="range" name="R" value="{{R}}" max="50" min="0" step="0.5" class="slider"></div>
+       <div> {{R}} </div>
+       <div><label>Midle: <input type="range" name="G" value="{{G}}" max="50" min="0" step="0.5" class="slider"></div>
+       <div> {{G}} </div>
+       <div><label>High: <input type="range" name="B" value="{{B}}" max="50" min="0" step="0.5" class="slider"></div>
+       <div> {{B}} </div>
+
+       <input type="submit" value="Submit">
+</form>
+
+<h1>Patterns:</h1>
+
+<form method="POST">
+       <button type="submit" name="Skip" value="Skip"> Skip </button>
+</form>
+
+<h1>Zoom:</h1>
+<form method="POST">
+  <div><label>Zoom: <input type="text" name="Zoom"></label></div>
+  <input type="submit" value="SubmitZoom">
+</form>
+
+<h1>Effect:</h1>
+<form method="POST">
+  <div><label>Effect: <input type="text" name="Effect" value="{{EFFECT}}"></label></div>
+  <div> {{EFFECT}}  </div>
+  <div><label>EffectOption: <input type="text" name="EO" value="{{EO}}"></label></div> 
+  <div> {{EO}} </div>
+  <input type="submit" value="SubmitEffect">
+</form>
+
