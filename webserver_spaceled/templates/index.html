@@ -48,18 +48,36 @@
 <h1>Templates:</h1>
 
 <form method="POST">
-       <div><button type="submit" name="Template1" value="Template1"> Boules d'energie rouge </button> <button type="submit" name="Template2" value="Template2"> boules d'energie psyche rouge</button>  <button type="submit" name="Template3" value="Template3"> Boules d'energie psy rouge rapide </button></div>
-       <div><button type="submit" name="Template4" value="Template4"> Boules d'energie purple  </button> <button type="submit" name="Template5" value="Template5"> boules d'energie psyche purple</button> <button type="submit" name="Template6" value="Template6"> Boules d'energie purple rapide</button></div>
-       <div><button type="submit" name="Template7" value="Template7"> Boules d'energie bleu  </button> <button type="submit" name="Template8" value="Template8"> boules d'energie psyche bleu</button> <button type="submit" name="Template9" value="Template9"> Boules d'energie bleu rapide</button></div>
-<h2>Longue trainées:</h2>
-       <div><button type="submit" name="Template10" value="Template10"> Boules d'energie rouge </button> <button type="submit" name="Template11" value="Template11"> boules d'energie psyche rouge</button>  <button type="submit" name="Template12" value="Template12"> Boules d'energie psy rouge rapide </button></div>
-       <div><button type="submit" name="Template13" value="Template13"> Boules d'energie purple  </button> <button type="submit" name="Template14" value="Template14"> boules d'energie psyche purple</button> <button type="submit" name="Template15" value="Template15"> Boules d'energie purple rapide</button></div>
-       <div><button type="submit" name="Template16" value="Template16"> Boules d'energie bleu  </button> <button type="submit" name="Template17" value="Template17"> boules d'energie psyche bleu</button> <button type="submit" name="Template18" value="Template18"> Boules d'energie bleu rapide</button></div>
+
+<h2>COLORS:</h2>
+
+       <div><button type="submit" name="Color1" value="Color1"> ROUGE </button> <button type="submit" name="Color2" value="Color2"> GREEN </button> <button type="submit" name="Color3" value="Color3"> BLUE </button></div> 
+       <div><button type="submit" name="Color4" value="Color4"> PURLPE </button><button type="submit" name="Color5" value="Color5"> ORANGE </button></div>
 
 
+<h2>MOVEMENTS:</h2>
 
+       <div><button type="submit" name="Template1" value="Template1"> SIMPLE </button> <button type="submit" name="Template2" value="Template2"> SPEED</button> <button type="submit" name="Template3" value="Template3"> ULTRA SPEED </button> <button type="submit" name="Template4" value="Template4"> ACID </button></div>
+       
+       
+<h2>EFFECTS:</h2>
+       
+       <div><button type="submit" name="Template5" value="Template5"> NO EFFECT</button> </div>
+       
+       <div><button type="submit" name="Template6" value="Template6"> Light Smouth</button><button type="submit" name="Template7" value="Template7"> Light R Smouth  </button> <button type="submit" name="Template8" value="Template8"> Light G Smouth</button> <button type="submit" name="Template9" value="Template9"> Light B Smouth</button></div>
+       
+       <div><button type="submit" name="Template10" value="Template10"> Medium Smouth</button><button type="submit" name="Template11" value="Template11"> Medium R Smouth  </button> <button type="submit" name="Template12" value="Template12"> Medium G Smouth</button> <button type="submit" name="Template13" value="Template13"> Medium B Smouth</button></div>
+       
+       <div><button type="submit" name="Template14" value="Template14"> Big Smouth</button><button type="submit" name="Template15" value="Template15"> Big R Smouth  </button> <button type="submit" name="Template16" value="Template16"> Big G Smouth</button> <button type="submit" name="Template17" value="Template17"> Big B Smouth</button></div>
+       
+       
 </form>
 
+<h1>AUTOMATIC:</h1>
+
+<form method="POST">
+    <div><button type="submit" name="Automatic" value="0"> none </button></div> <div><button type="submit" name="Automatic" value="1"> mode 1 </button></div>
+</form>
 
 
 <form method="POST">
@@ -109,9 +127,9 @@
 
 <h1>Effect:</h1>
 <form method="POST">
-  <div><label>Effect: <input type="text" name="Effect" value="{{EFFECT}}"></label></div>
+  <div><label>Effect: <input type="text" name="Effect" ></label></div>
   <div> {{EFFECT}}  </div>
-  <div><label>EffectOption: <input type="text" name="EO" value="{{EO}}"></label></div> 
+  <div><label>EffectOption: <input type="text" name="EO" ></label></div> 
   <div> {{EO}} </div>
   <input type="submit" value="SubmitEffect">
 </form>

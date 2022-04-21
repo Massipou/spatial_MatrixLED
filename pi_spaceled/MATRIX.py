@@ -15,11 +15,11 @@ NET_AUDIO = True
 
 # LED strip configuration:
 LED_COUNT      = 600      # Number of LED pixels.
-LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
+LED_PIN        = 12     # GPIO pin connected to the pixels (18 uses PWM!).
 #LED_PIN        = 12      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 150    # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS = 5    # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
@@ -121,8 +121,10 @@ def pixel_mapper(strip, index, r, g, b):
     acid = pixel_map.acid
 
     acidlist = pixel_map.acidposlist
+
     if not acid: pixel_map.pixel_number = int(round(LED_COUNT/pixel_map.zoom))
     else: pixel_map.pixel_number = pixel_map.acidlen
+
     pixels_number = pixel_map.pixel_number
 
     pixel_map.gap = []
@@ -140,17 +142,17 @@ def pixel_mapper(strip, index, r, g, b):
                         g = int(round(pixel_map.gmap[index]/effect_option))
                         b = int(round(pixel_map.bmap[index]/effect_option))
                     elif effect == 2:
-                        r = int(round(pixel_map.rmap[index]/(effect_option*lol)))
-                        g = int(round(pixel_map.gmap[index]/(effect_option*lol)))
-                        b = int(round(pixel_map.bmap[index]/effect_option))
-                    elif effect == 3:
                         r = int(round(pixel_map.rmap[index]/effect_option))
                         g = int(round(pixel_map.gmap[index]/(effect_option*lol)))
                         b = int(round(pixel_map.bmap[index]/(effect_option*lol)))
+                    elif effect == 3:
+                        r = int(round(pixel_map.rmap[index]/(effect_option*lol)))
+                        g = int(round(pixel_map.gmap[index]/effect_option))
+                        b = int(round(pixel_map.bmap[index]/(effect_option*lol)))
                     elif effect == 4:
                         r = int(round(pixel_map.rmap[index]/(effect_option*lol)))
-                        g = int(round(pixel_map.gmap[index]/(effect_option)))
-                        b = int(round(pixel_map.bmap[index]/(effect_option*lol)))
+                        g = int(round(pixel_map.gmap[index]/(effect_option*lol)))
+                        b = int(round(pixel_map.bmap[index]/effect_option))
                     elif effect == 5:
                         r = int(round(pixel_map.rmap[index]/(effect_option*lol)))
                         g = int(round(pixel_map.gmap[index]/effect_option))
@@ -163,6 +165,9 @@ def pixel_mapper(strip, index, r, g, b):
                         r = int(round(pixel_map.rmap[index]/effect_option))
                         g = int(round(pixel_map.gmap[index]/effect_option))
                         b = int(round(pixel_map.bmap[index]/(effect_option*lol)))
+                    if r < 4: r = 0
+                    if g < 4: g = 0
+                    if b < 4: b = 0
 
 
     pixel_map.rmap[index] = r
@@ -201,78 +206,90 @@ def get_datas():
 
 def template(number):
 
+# SIMPLE
     if number == 1:
-        pixel_map.acid = True
-        pixel_map.effect = 6
-        pixel_map.effectoption = 1.5
-        pixel_map.zoom = 1
+        pixel_map.acid = False
+        pixel_map.zoom = 5
 
+# SPEED
     elif number == 2:
-        pixel_map.acid = True
-        pixel_map.effect = 6
-        pixel_map.effectoption = 1.1
-        pixel_map.zoom = 1
+        pixel_map.acid = False
+        pixel_map.zoom = 10
 
+# ULTRA SPEED
     elif number == 3:
         pixel_map.acid = False
-        pixel_map.effect = 6
-        pixel_map.effectoption = 1.5
-        pixel_map.zoom = 5
+        pixel_map.zoom = 20
 
+# ACID
     elif number == 4:
-        pixel_map.acid = False
-        pixel_map.effect = 6
-        pixel_map.effectoption = 1.1
-        pixel_map.zoom = 5
+        pixel_map.acid = True
+        pixel_map.zoom = 1
 
+# NO EFFECT
     elif number == 5:
-        pixel_map.acid = False
-        pixel_map.effect = 6
-        pixel_map.effectoption = 1.5
-        pixel_map.zoom = 10
+        pixel_map.effect = 1
+        pixel_map.effectoption = 0
 
+# L-SMOUTH
     elif number == 6:
-        pixel_map.acid = True
-        pixel_map.effect = 7
-        pixel_map.effectoption = 1.5
-        pixel_map.zoom = 1
+        pixel_map.effect = 1
+        pixel_map.effectoption = 1.8
 
+# LR-SMOUTH
     elif number == 7:
-        pixel_map.acid = True
-        pixel_map.effect = 7
-        pixel_map.effectoption = 1.1
-        pixel_map.zoom = 1
+        pixel_map.effect = 2
+        pixel_map.effectoption = 1.8
 
+# LG-SMOUTH
     elif number == 8:
-        pixel_map.acid = False
-        pixel_map.effect = 7
-        pixel_map.effectoption = 1.5
-        pixel_map.zoom = 5
+        pixel_map.effect = 3
+        pixel_map.effectoption = 1.8
 
+# LB-SMOUTH
     elif number == 9:
-        pixel_map.acid = False
-        pixel_map.effect = 7
-        pixel_map.effectoption = 1.1
-        pixel_map.zoom = 5
+        pixel_map.effect = 4
+        pixel_map.effectoption = 1.8
 
+# M-SMOUTH
     elif number == 10:
-        pixel_map.acid = False
-        pixel_map.effect = 7
+        pixel_map.effect = 4
         pixel_map.effectoption = 1.5
-        pixel_map.zoom = 10
 
+# MR-SMOUTH
     elif number == 11:
-        pixel_map.acid = False
-        pixel_map.effect = 6
-        pixel_map.effectoption = 1.1
-        pixel_map.zoom = 10
+        pixel_map.effect = 2
+        pixel_map.effectoption = 1.5
 
-    elif number == 10:
-        pixel_map.acid = False
-        pixel_map.effect = 7
-        pixel_map.effectoption = 1.1
-        pixel_map.zoom = 10
+# MG-SMOUTH
+    elif number == 12:
+        pixel_map.effect = 3
+        pixel_map.effectoption = 1.5
 
+# MB-SMOUTH
+    elif number == 13:
+        pixel_map.effect = 4
+        pixel_map.effectoption = 1.5
+
+# B-SMOUTH
+    elif number == 14:
+        pixel_map.effect = 4
+        pixel_map.effectoption = 1.2
+
+# BR-SMOUTH
+    elif number == 15:
+        pixel_map.effect = 2
+        pixel_map.effectoption = 1.2
+
+# BG-SMOUTH
+    elif number == 16:
+        pixel_map.effect = 3
+        pixel_map.effectoption = 1.2
+
+# BB-SMOUTH
+    elif number == 17:
+        pixel_map.effect = 4
+        pixel_map.effectoption = 1.2
 
 
 # freq_to_color2 colors send by client and return it
