@@ -4,7 +4,21 @@ import multiprocessing
 import threading
 import time
 from colorsender import *
-                                   
+
+
+def isfloat(num):
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False
+    
+class globales:
+    effect = "0"
+    effect_option = "0"
+    auto = "0"
+    auto_speed = "5"
+
 # Create and initialize automatic thread
 class threadAutomatic (threading.Thread):
     def __init__(self, threadID, name, mode, step_time):
@@ -14,13 +28,27 @@ class threadAutomatic (threading.Thread):
         self.mode = mode
         self.step_time = step_time
         self.start_time = time.time()
+        self.switch = True
    
     def run(self):
         step = 0
         steps_number = 0
+        loop = 0
         while True:
-            if self.mode == 1:
-                steps_number = 15
+            
+            if self.switch:
+                loop = 0
+                if self.mode == 1:
+                    self.step_time = 16
+                    steps_number = 15
+                elif self.mode == 2:
+                    self.step_time = 0.08
+                    steps_number = 3
+                elif self.mode == 3:
+                    self.step_time = 8
+                    steps_number = 9
+                    
+                self.switch = False 
             
             now = time.time() - self.start_time
             
@@ -70,6 +98,57 @@ class threadAutomatic (threading.Thread):
                     elif step == 15:
                         template(5) #NO EFFECT
                         
+                elif self.mode == 2:
+                    if step == 1:
+                        color(1)
+                    elif step == 2:
+                        color(3)
+                    elif step == 3:
+                        color(6)
+                        
+                    loop = loop + 1
+                    
+                    if loop == 20:
+                        template(15)
+                    if loop == 40:
+                        template(16)
+                    if loop == 60:
+                        template(17)
+                        
+                    if loop >= 60: loop = 0
+                    
+                elif self.mode == 3:
+                    
+                    if step == 1:
+                        template(7)
+                    if step == 2:
+                        template(8)
+                    if step == 3:
+                        template(9)
+                    if step == 4:
+                        template(11)
+                    if step == 5:
+                        template(12)
+                    if step == 6:
+                        template(13)
+                    if step == 7:
+                        template(15)
+                    if step == 8:
+                        template(16)
+                    if step == 9:
+                        template(17)
+                    
+                        
+                    loop = loop + 1
+                    
+                    if loop == 1:
+                        color(4)
+                    if loop == 10:
+                        color(5)
+                    if loop == 20:
+                        color(6)
+                        
+                    if loop >= 20: loop = 0
             
         
         
@@ -84,7 +163,8 @@ rseuil = 15
 gseuil = 14
 bseuil = 15
 zoom = 1
-thread_colorsender = threadColorSender(1, "Thread-ColorSender", rseuil, gseuil, bseuil)
+colormode = "basic"
+thread_colorsender = threadColorSender(1, "Thread-ColorSender", rseuil, gseuil, bseuil, colormode)
 
 
 
@@ -121,13 +201,6 @@ def color(number):
         thread_colorsender.blue = 200    
 
 
-
-class globales:
-    effect = "0"
-    effect_option = "0"
-    auto = "0"
-
-
 # create the Flask app
 app = Flask(__name__)
 start_stop = False
@@ -145,21 +218,30 @@ def start_stop():
         g = globales
         start_stop = request.form.get('start_stop')
         zoom = request.form.get("Zoom")
-        
-        
         g.auto = request.form.get('Automatic')
+        g.auto_speed = request.form.get('auto_speed')
+        
+
+            
+            
+        if not g.auto_speed is None:
+            if isfloat(g.auto_speed):
+                thread_automatic.step_time = float(g.auto_speed)
+        
         if not g.auto is None:
             print (g.auto)
-            if g.auto == "1":
-                thread_automatic.start()
-                thread_automatic.mode = 1
-            elif g.auto == 0:
-                thread_automatic.stop()
+            if g.auto >= "1":
+                thread_automatic.mode = int(g.auto)
+                thread_automatic.switch = True
+            elif g.auto == "0":
+                thread_automatic.mode = 0
 
         if not request.form.get("Effect") is None: g.effect = request.form.get("Effect")
         if not request.form.get("EO") is None: g.effect_option = request.form.get("EO")
         print (g.effect)
-
+        
+        if not request.form.get("colormode") is None: thread_colorsender.colormode = request.form.get("colormode")
+        print (thread_colorsender.colormode)
         #if g.effect_option is None: g.effect_option = globales.effect_option
 
         rseuil = request.form.get('R')
@@ -250,11 +332,13 @@ def start_stop():
             thread_colorsender.data = g.effect
 
 
-        if start_stop == "start": thread_colorsender.start()
+        if start_stop == "start":
+            thread_colorsender.start()
+            thread_automatic.start()
         elif start_stop == "stop": thread_colorsender.stop()
         
 
-    return render_template('index.html', status=start_stop, R=thread_colorsender.r, G=thread_colorsender.g, B=thread_colorsender.b, RED=thread_colorsender.red, GREEN=thread_colorsender.green, BLUE=thread_colorsender.blue, EO=globales.effect_option, EFFECT=globales.effect)
+    return render_template('index.html', status=start_stop, R=thread_colorsender.r, G=thread_colorsender.g, B=thread_colorsender.b, RED=thread_colorsender.red, GREEN=thread_colorsender.green, BLUE=thread_colorsender.blue, EO=globales.effect_option, EFFECT=globales.effect, colormode=thread_colorsender.colormode)
 
 
 if __name__ == '__main__':

@@ -76,7 +76,9 @@
 <h1>AUTOMATIC:</h1>
 
 <form method="POST">
-    <div><button type="submit" name="Automatic" value="0"> none </button></div> <div><button type="submit" name="Automatic" value="1"> mode 1 </button></div>
+    <div><button type="submit" name="Automatic" value="0"> none </button></div>
+    <div><button type="submit" name="Automatic" value="1"> mode simple </button><button type="submit" name="Automatic" value="2"> mode color speed </button><button type="submit" name="Automatic" value="3"> mode victoire vicrote </button></div>
+    <div><label>Speed (second) <input type="text" name="auto_speed"></label></div>
 </form>
 
 
@@ -95,6 +97,12 @@
        <input type="submit" value="Submit">
 </form>
 
+<h1>Color modes: {{colormode}}</h1>
+
+<form method="POST">
+    <div><button type="submit" name="colormode" value="basic"> basic </button></div>
+    <div><button type="submit" name="colormode" value="eqcolor"> EQ->color </button></div>
+</form>
 
 <h1>EQ:</h1>
 

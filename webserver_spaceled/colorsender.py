@@ -45,6 +45,38 @@ def data_sender(r="0", g="0", b="0", data="0", zoom="0"):
     #print("{} {} {} {} {}" .format(r, g, b, data, zoom))
     s.send(data_to_send.encode())
 
+
+def freq_to_color3(rseuil = 15, gseuil = 14, bseuil = 15, red = 0, green = 255, blue = 0):
+    sounddata = get_sound_data()
+    bassmax = -60
+    midmax = -60
+    highmax = -60
+    for i in range (50, 200, 50):
+        if sounddata[freqindex(i)] > bassmax : bassmax = sounddata[freqindex(i)]
+    for i in range (250, 500, 50):
+        if sounddata[freqindex(i)] > midmax : midmax = sounddata[freqindex(i)]
+    for i in range (500, 2000, 50):
+        if sounddata[freqindex(i)] > highmax : highmax = sounddata[freqindex(i)]
+
+    if -bassmax < rseuil:
+        r = int(round(((bassmax + rseuil)/5)**4))
+        if r < 0: r = 0
+        if r > 255: r = 255
+    else: r = 0
+    if -midmax < gseuil:
+        g = int(round(((midmax + gseuil)/3)**4))
+        if g < 0: g = 0
+        if g > 255: g = 255
+    else: g = 0
+    if -highmax < bseuil:
+        b = int(round(((highmax + bseuil)/4)**4))
+        if b < 0: b = 0
+        if b > 255: b = 255
+    else: b = 0
+    #print ("{}, {}" .format(highmax, bseuil))
+
+    return (r, g, b)
+
 def freq_to_color2(rseuil = 15, gseuil = 14, bseuil = 15, red = 0, green = 255, blue = 0):
     sounddata = get_sound_data()
     bassmax = -60
@@ -80,7 +112,7 @@ def freq_to_color2(rseuil = 15, gseuil = 14, bseuil = 15, red = 0, green = 255, 
     return (r, g, b)
 
 class threadColorSender (threading.Thread):
-   def __init__(self, threadID, name, R, G, B):
+   def __init__(self, threadID, name, R, G, B, colormode):
       threading.Thread.__init__(self)
       self.threadID = threadID
       self.name = name
@@ -92,9 +124,14 @@ class threadColorSender (threading.Thread):
       self.red = "0"
       self.green = "255"
       self.blue = "0"
+      self.colormode = "basic"
    def run(self):
         while True:
-            r, g, b = freq_to_color2(self.r, self.g, self.b, self.red, self.green, self.blue)
+            if self.colormode == "basic":
+                r, g, b = freq_to_color2(self.r, self.g, self.b, self.red, self.green, self.blue)
+            if self.colormode == "eqcolor":
+                r, g, b = freq_to_color3(self.r, self.g, self.b, self.red, self.green, self.blue)
+            
             data_sender(r, g, b, self.data, self.zoom)
             #print("{} {}".format(self.data, self.zoom))
             self.data = "0"
